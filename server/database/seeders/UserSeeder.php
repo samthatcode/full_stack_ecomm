@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Admin',
             'email' => 'admin@rufars.com',
             'password' => 'password',
-            'role' => 'admin',
+            'role' => 'super_admin',
             'phone' => '+234 800 000 0000',
             'address' => '123 Admin Street',
             'city' => 'Lagos',

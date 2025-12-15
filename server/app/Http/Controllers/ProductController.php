@@ -29,7 +29,24 @@ class ProductController extends Controller
 
     public function createProduct(Request $request)
     {
-        $product = Product::create($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'sku' => 'required|string|unique:products,sku',
+            'price' => 'required|numeric|min:0',
+            'stock_quantity' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'weight' => 'nullable|string',
+            'is_active' => 'boolean'
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $request['image'] = '/storage/' . $path;
+        }
+        $product = Product::create($data);
 
         return response()->json([
             'data' =>  $product,
@@ -39,8 +56,31 @@ class ProductController extends Controller
 
     public function updateProduct(Request $request, $product_id)
     {
-        $product = Product::find($product_id);
-        $product->update($request->all());
+        $product = Product::findOrFail($product_id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'sku' => 'required|string|unique:products,sku,' . $product_id,
+            'price' => 'required|numeric|min:0',
+            'stock_quantity' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'weight' => 'nullable|string',
+            'is_active' => 'boolean'
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            if ($product->image && file_exists(public_path($product->image))) {
+                unlink(public_path($product->image));
+            }
+
+            $path = $request->file('image')->store('products', 'public');
+            $data['image'] = '/storage/' . $path;
+        }
+
+        $product->update($data);
 
         return response()->json([
             'data' =>  $product,

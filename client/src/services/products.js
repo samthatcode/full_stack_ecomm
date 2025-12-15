@@ -10,14 +10,14 @@ export const Products = {
     },
 
     createProduct(data) {
-        return api.post('/super_admin/products/create_products', data)
+        return api.post('/products/create_products', data)
     },
 
     updateProduct(product_id, data) {
-        return api.put(`/super_admin/products/${product_id}/update_product`, data)
+        return api.put(`/products/${product_id}/update_product`, data)
     },
 
     deleteProduct(product_id) {
-        return api.delete(`/super_admin/products/${product_id}/delete_product`)
+        return api.delete(`/products/${product_id}/delete_product`)
     },
 }

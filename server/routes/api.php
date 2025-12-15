@@ -15,10 +15,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 
-    Route::middleware(['role:admin'])->prefix('super_admin')->group(function () {
-        Route::prefix('dashboard')->group(function () {
-            Route::get('/', [DashboardController::class, 'index']);
-        });
+    Route::middleware(['role:admin'])->prefix('dashboard')->group(function () {
+        Route::get('/', [DashboardController::class, 'index']);
+
         Route::prefix('products')->group(function () {
             Route::post('/create_products', [ProductController::class, 'createProduct']);
             Route::post('/{produt_id}/update_product', [ProductController::class, 'updateProduct']);
@@ -39,7 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 });
 
-Route::prefix('auth')->name('auth.')->group(function () {
+Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
 
@@ -54,4 +53,6 @@ Route::prefix('products')->group(function () {
     Route::get('/get_all_products', [ProductController::class, 'getAllProducts']);
     Route::get('/{product_id}/get_single_product', [ProductController::class, 'getSingleProduct']);
 });
-Route::get('/get_all_categories', [CategoryController::class, 'getProductCategory']);
+Route::prefix('category')->group(function () {
+    Route::get('/get_all_categories', [CategoryController::class, 'getProductCategory']);
+});

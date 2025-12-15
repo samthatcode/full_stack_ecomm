@@ -26,7 +26,7 @@ export default {
 
   computed: {
     isAdmin() {
-      return this.$route.path.startsWith("/dashboard");
+      return this.$route.path?.startsWith("/dashboard");
     },
     isHelp() {
       return this.$route.name === "Help";

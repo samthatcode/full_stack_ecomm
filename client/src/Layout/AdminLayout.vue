@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50">
     <header class="sticky top-0 z-30 bg-white border-b border-gray-200">
       <div class="px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
@@ -83,55 +83,58 @@
       </div>
     </header>
 
-    <aside
-      :class="[
-        'fixed inset-y-0 left-0 z-20 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)]',
-        mobileSidebarOpen
-          ? 'translate-x-0'
-          : '-translate-x-full lg:translate-x-0',
-      ]"
-    >
-      <nav class="p-4 space-y-2">
-        <button
-          v-for="tab in tabs"
-          :key="tab.id"
-          @click="selectTab(tab.id)"
-          :class="[
-            'w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors',
-            activeTab === tab.id
-              ? 'bg-primary text-white'
-              : 'text-gray-700 hover:bg-gray-100',
-          ]"
-        >
-          <component :is="tab.icon" :size="20" />
-          <span class="font-medium">{{ tab.label }}</span>
-        </button>
-      </nav>
-    </aside>
+    <div class="flex">
+      <aside
+        :class="[
+          'fixed inset-y-0 left-0 z-20 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)]',
+          mobileSidebarOpen
+            ? 'translate-x-0'
+            : '-translate-x-full lg:translate-x-0',
+        ]"
+      >
+        <nav class="p-4 space-y-2">
+          <button
+            v-for="tab in tabs"
+            :key="tab.id"
+            @click="selectTab(tab.id)"
+            :class="[
+              'w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors',
+              activeTab === tab.id
+                ? 'bg-primary text-white'
+                : 'text-gray-700 hover:bg-gray-100',
+            ]"
+          >
+            <component :is="tab.icon" :size="20" />
+            <span class="font-medium">{{ tab.label }}</span>
+          </button>
+        </nav>
+      </aside>
+
+      <main class="flex-1 p-4 ml-0 md:p-6">
+        <router-view />
+      </main>
+    </div>
 
     <div
       v-if="mobileSidebarOpen"
       @click="mobileSidebarOpen = false"
       class="fixed inset-0 z-10 bg-black bg-opacity-50 lg:hidden"
     ></div>
-
-    <main class="flex-1 p-4 md:p-6">
-      <router-view />
-    </main>
   </div>
 </template>
 
 <script>
+import { Bell, ChevronDown, Menu } from "lucide-vue-next";
 import { Auth } from "../services/auth";
 
 export default {
+  components: { Bell, ChevronDown, Menu },
   data() {
     return {
       mobileSidebarOpen: false,
       showNotifications: false,
       showProfileMenu: false,
       unreadNotifications: 3,
-      activeTab: "dashboard",
       tabs: [
         { id: "dashboard", label: "Dashboard", icon: "LayoutDashboard" },
         { id: "products", label: "Products", icon: "Package" },

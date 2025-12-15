@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+    <div class="grid grid-cols-1 gap-6 mt-4 xl:grid-cols-2">
       <div class="p-6 bg-white border border-gray-200 rounded-xl">
         <h3 class="mb-4 text-lg font-bold text-gray-900">Recent Orders</h3>
         <div class="space-y-4">

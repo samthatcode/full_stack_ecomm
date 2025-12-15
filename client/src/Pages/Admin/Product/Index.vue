@@ -297,10 +297,16 @@
     <!-- Product Modal -->
     <CreateProduct
       v-if="showModal"
-      :product="editingProduct"
-      :categories="categories"
       @close="closeModal"
-      @saved="fetchProducts"
+      @product_created="fetchProducts"
+    />
+
+    <EditProduct
+      v-if="showEditModal"
+      :current_product="current_product"
+      :categories="categories"
+      @close="closeEditModal"
+      @product_updated="fetchProducts"
     />
   </div>
 </template>
@@ -309,10 +315,12 @@
 import { Products } from "@/services/products";
 import { Category } from "@/services/category";
 import CreateProduct from "./Partials/CreateProduct.vue";
+import EditProduct from "./Partials/EditProduct.vue";
 
 export default {
   components: {
     CreateProduct,
+    EditProduct,
   },
 
   data() {
@@ -320,7 +328,7 @@ export default {
       products: [],
       categories: [],
       showModal: false,
-      editingProduct: null,
+      showEditModal: false,
       loading: false,
       searchQuery: "",
       selectedCategory: "",
@@ -331,6 +339,7 @@ export default {
         per_page: 10,
         total: 0,
       },
+      current_product: null,
     };
   },
 
@@ -371,11 +380,10 @@ export default {
       this.loading = true;
       try {
         const res = await Products.getAllProducts({ page });
-        // Adjust based on your Laravel pagination structure
-        this.products = res.data.data;
+        this.products = res.data.data?.data;
 
         // Handle pagination metadata
-        if (data.current_page) {
+        if (res.data.current_page) {
           this.pagination = {
             current_page: data.current_page,
             last_page: data.last_page,
@@ -385,7 +393,6 @@ export default {
         }
       } catch (err) {
         console.error("Failed to fetch products:", err);
-        alert("Failed to load products");
       } finally {
         this.loading = false;
       }
@@ -401,18 +408,21 @@ export default {
     },
 
     openProductModal() {
-      this.editingProduct = null;
+      this.current_product = null;
       this.showModal = true;
     },
 
     editProduct(product) {
-      this.editingProduct = { ...product };
-      this.showModal = true;
+      this.current_product = product;
+      this.showEditModal = true;
     },
 
     closeModal() {
       this.showModal = false;
-      this.editingProduct = null;
+    },
+    closeEditModal() {
+      this.showEditModal = false;
+      this.current_product = null;
     },
 
     async confirmDelete(id) {
@@ -422,11 +432,9 @@ export default {
 
       try {
         await Products.deleteProduct(id);
-        alert("Product deleted successfully");
         this.fetchProducts(this.pagination.current_page);
       } catch (err) {
         console.error("Failed to delete product:", err);
-        alert("Failed to delete product");
       }
     },
 

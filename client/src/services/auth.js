@@ -1,20 +1,20 @@
 import api from './api'
 
 export const Auth = {
-    login(route_fn, credentials) {
-        return api.post(route_fn('auth.login'), credentials)
+    login(credentials) {
+        return api.post('auth/login', credentials)
     },
 
-    register(route_fn, user_data) {
-        return api.post(route_fn('auth.register'), user_data)
+    register(user_data) {
+        return api.post('auth/register', user_data)
     },
 
-    logout(route_fn) {
-        return api.post(route_fn('auth.logout'))
+    logout() {
+        return api.post('auth/logout')
     },
 
-    getCurrentUser(route_fn) {
-        return api.get(route_fn('user.profile'))
+    getCurrentUser() {
+        return api.get('auth/profile')
     },
 
     is_authenticated() {
