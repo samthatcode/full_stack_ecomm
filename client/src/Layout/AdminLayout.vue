@@ -186,8 +186,9 @@ export default {
     },
 
     handleLogout() {
-      Auth.logout();
-      this.$router.push("/login");
+      Auth.logout().finally(() => {
+        this.$router.replace({ name: "Login" });
+      });
     },
   },
 };

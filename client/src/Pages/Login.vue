@@ -229,13 +229,10 @@ export default {
       this.error = "";
 
       try {
-        const res = await Auth.login(this.route, {
+        const res = await Auth.login({
           email: this.email,
           password: this.password,
         });
-
-        localStorage.setItem("auth_token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
 
         const redirect_to = this.$route.query.redirect || "/checkout";
         this.$router.push(redirect_to);
