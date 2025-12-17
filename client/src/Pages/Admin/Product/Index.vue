@@ -131,7 +131,7 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-medium text-gray-900">
-                ₹{{ parseFloat(product.price).toFixed(2) }}
+                ₦{{ parseFloat(product.price).toFixed(2) }}
               </div>
               <div
                 v-if="
@@ -139,7 +139,7 @@
                 "
                 class="text-xs text-green-600"
               >
-                Sale: ₹{{ parseFloat(product.sale_price).toFixed(2) }}
+                Sale: ₦{{ parseFloat(product.sale_price).toFixed(2) }}
               </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
@@ -225,7 +225,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-lg font-bold text-primary">
-              ₹{{ parseFloat(product.price).toFixed(2) }}
+              ₦{{ parseFloat(product.price).toFixed(2) }}
             </p>
             <p class="text-sm text-gray-500">
               Stock: {{ product.stock_quantity }}

@@ -11,6 +11,27 @@ class ProductController extends Controller
     {
         $products = Product::query()->with('category');
 
+        if ($request->filled('category_id')) {
+            $products->where('category_id', $request->category_id);
+        }
+
+        if ($request->filled('sort_by')) {
+            switch ($request->sort_by) {
+                case 'price-low':
+                    $products->orderBy('price', 'asc');
+                    break;
+                case 'price-high':
+                    $products->orderBy('price', 'desc');
+                    break;
+                case 'rating':
+                    $products->orderBy('rating', 'desc');
+                    break;
+                default: // featured
+                    $products->where('is_featured', true)->orderBy('created_at', 'desc');
+                    break;
+            }
+        }
+
         return response()->json([
             'data' =>  $products->paginate('40'),
             'message' => 'Products fetched successfully'

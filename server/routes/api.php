@@ -7,6 +7,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\DashboardController;
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -15,7 +16,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 
-    Route::middleware(['role:admin'])->prefix('dashboard')->group(function () {
+    Route::middleware(['role:super_admin'])->prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'index']);
 
         Route::prefix('products')->group(function () {
@@ -35,6 +36,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/{order_id}/get_single_order', [OrderController::class, 'getSingleOrder']);
             Route::put('/{order_id}/update_order_status', [OrderController::class, 'updateOrderStatus']);
         });
+
+        Route::prefix('users')->group(function () {
+            Route::get('/get_all_users', [UserRoleController::class, 'getAllUsers']);
+            Route::get('/{user_id}/get_single_user', [UserRoleController::class, 'getSingleUser']);
+            Route::post('/{user_id}/assign_roles', [UserRoleController::class, 'assignRolesToUser']);
+            Route::post('/{user_id}/assign_permissions', [UserRoleController::class, 'assignPermissionsToUser']);
+            Route::delete('/{user_id}/remove_role', [UserRoleController::class, 'removeRoleFromUser']);
+            Route::delete('/{user_id}/remove_permission', [UserRoleController::class, 'removePermissionFromUser']);
+        });
+
+        // Roles and Permissions Routes
+        Route::get('/roles', [UserRoleController::class, 'getAllRoles']);
+        Route::get('/permissions', [UserRoleController::class, 'getAllPermissions']);
     });
 });
 

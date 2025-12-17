@@ -245,7 +245,7 @@
               </div>
               <p class="mb-1 text-sm text-gray-600">Total Revenue</p>
               <p class="text-2xl font-bold text-gray-900">
-                <!-- ₹{{ stats.totalRevenue.toLocaleString() }} -->
+                <!-- ₦{{ stats.totalRevenue.toLocaleString() }} -->
               </p>
               <p class="mt-2 text-xs text-green-600">↑ 12.5% from last month</p>
             </div>
@@ -317,7 +317,7 @@
                   </div>
                   <div class="text-right">
                     <p class="font-semibold text-gray-900">
-                      ₹{{ order.total.toFixed(2) }}
+                      ₦{{ order.total.toFixed(2) }}
                     </p>
                     <span
                       :class="[
@@ -485,7 +485,7 @@
                     <td
                       class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap"
                     >
-                      ₹{{ product.price }}
+                      ₦{{ product.price }}
                     </td>
                     <td
                       class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap"
@@ -562,7 +562,7 @@
                 <div>
                   <span class="text-gray-600">Price:</span>
                   <span class="ml-1 font-semibold text-gray-900"
-                    >₹{{ product.price }}</span
+                    >₦{{ product.price }}</span
                   >
                 </div>
                 <div>
@@ -630,7 +630,7 @@
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <label class="block mb-2 text-sm font-medium text-gray-700"
-                      >Price (₹)</label
+                      >Price (₦)</label
                     >
                     <input
                       v-model.number="productForm.price"
@@ -860,7 +860,7 @@
                     <td
                       class="px-6 py-4 text-sm font-semibold text-gray-900 whitespace-nowrap"
                     >
-                      ₹{{ order.total.toFixed(2) }}
+                      ₦{{ order.total.toFixed(2) }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <span
@@ -936,7 +936,7 @@
                 <div>
                   <span class="text-gray-600">Total:</span>
                   <span class="ml-1 font-semibold text-gray-900"
-                    >₹{{ order.total.toFixed(2) }}</span
+                    >₦{{ order.total.toFixed(2) }}</span
                   >
                 </div>
               </div>
@@ -1015,7 +1015,7 @@
                   <div class="p-4 rounded-lg bg-gray-50">
                     <p class="mb-1 text-sm text-gray-600">Total Amount</p>
                     <p class="text-lg font-semibold text-gray-900">
-                      ₹{{ selectedOrder.total.toFixed(2) }}
+                      ₦{{ selectedOrder.total.toFixed(2) }}
                     </p>
                   </div>
                 </div>
@@ -1072,7 +1072,7 @@
                         </div>
                       </div>
                       <p class="font-semibold text-gray-900">
-                        ₹{{ (selectedOrder.total / 2).toFixed(2) }}
+                        ₦{{ (selectedOrder.total / 2).toFixed(2) }}
                       </p>
                     </div>
                   </div>
@@ -1135,7 +1135,7 @@
             <div class="p-6 bg-white border border-gray-200 rounded-xl">
               <p class="mb-1 text-sm text-gray-600">Average Order Value</p>
               <p class="text-2xl font-bold text-gray-900">
-                ₹{{ averageOrderValue }}
+                ₦{{ averageOrderValue }}
               </p>
             </div>
           </div>
@@ -1540,7 +1540,7 @@
                     <div class="p-4 rounded-lg bg-gray-50">
                       <p class="mb-1 text-sm text-gray-600">Total Spent</p>
                       <p class="text-2xl font-bold text-gray-900">
-                        ₹{{ selectedCustomer.totalSpent.toFixed(2) }}
+                        ₦{{ selectedCustomer.totalSpent.toFixed(2) }}
                       </p>
                     </div>
                     <div class="p-4 rounded-lg bg-gray-50">
@@ -1811,7 +1811,7 @@
                           <td
                             class="px-4 py-3 text-sm font-semibold text-gray-900 whitespace-nowrap"
                           >
-                            ₹{{ order.total.toFixed(2) }}
+                            ₦{{ order.total.toFixed(2) }}
                           </td>
                           <td class="px-4 py-3 whitespace-nowrap">
                             <span
@@ -1878,7 +1878,7 @@
                       class="flex items-center justify-between pt-2 border-t border-gray-100"
                     >
                       <span class="text-sm font-semibold text-gray-900"
-                        >₹{{ order.total.toFixed(2) }}</span
+                        >₦{{ order.total.toFixed(2) }}</span
                       >
                       <button
                         @click="viewOrder(order)"
@@ -1902,7 +1902,7 @@
                     <div>
                       <p class="text-sm text-gray-600">Total Spent</p>
                       <p class="text-xl font-bold text-gray-900">
-                        ₹{{ selectedCustomer.totalSpent.toFixed(2) }}
+                        ₦{{ selectedCustomer.totalSpent.toFixed(2) }}
                       </p>
                     </div>
                   </div>
@@ -1955,7 +1955,7 @@
             <div class="p-6 bg-white border border-gray-200 rounded-xl">
               <p class="mb-1 text-sm text-gray-600">Revenue</p>
               <p class="text-2xl font-bold text-gray-900">
-                ₹{{ analyticsData.revenue.toLocaleString() }}
+                ₦{{ analyticsData.revenue.toLocaleString() }}
               </p>
               <p class="mt-2 text-xs text-green-600">
                 ↑ {{ analyticsData.revenueGrowth }}%
@@ -1982,7 +1982,7 @@
             <div class="p-6 bg-white border border-gray-200 rounded-xl">
               <p class="mb-1 text-sm text-gray-600">Avg Order Value</p>
               <p class="text-2xl font-bold text-gray-900">
-                ₹{{ analyticsData.avgOrderValue }}
+                ₦{{ analyticsData.avgOrderValue }}
               </p>
               <p class="mt-2 text-xs text-green-600">
                 ↑ {{ analyticsData.avgOrderGrowth }}%
@@ -2058,7 +2058,7 @@
                     {{ product.sales }} units sold
                   </p>
                   <p class="text-xs text-gray-600">
-                    ₹{{ (product.price * product.sales).toLocaleString() }}
+                    ₦{{ (product.price * product.sales).toLocaleString() }}
                   </p>
                 </div>
               </div>
@@ -2548,7 +2548,7 @@
                     <select
                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
                     >
-                      <option>INR (₹)</option>
+                      <option>INR (₦)</option>
                       <option>USD ($)</option>
                       <option>EUR (€)</option>
                     </select>
@@ -3464,7 +3464,7 @@ export default {
               beginAtZero: true,
               ticks: {
                 callback: function (value) {
-                  return "₹" + value.toLocaleString();
+                  return "₦" + value.toLocaleString();
                 },
               },
             },

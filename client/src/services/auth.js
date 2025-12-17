@@ -26,7 +26,22 @@ export const Auth = {
         return !!localStorage.getItem('auth_token')
     },
 
-    user() {
-        return JSON.parse(localStorage.getItem('user'))
+    getUser() {
+        const user = localStorage.getItem('user')
+        return user ? JSON.parse(user) : null
+    },
+
+    has_role(role) {
+        const user = this.user()
+        return user?.roles?.includes(role) || false
+    },
+
+    is_admin() {
+        return this.has_role('admin')
+    },
+
+    has_permission(permission) {
+        const user = this.user()
+        return user?.permissions?.includes(permission) || false
     }
 }

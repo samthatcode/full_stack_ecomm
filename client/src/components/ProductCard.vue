@@ -87,7 +87,7 @@
       <div class="flex items-center justify-between mt-auto">
         <div>
           <span class="text-2xl font-bold text-primary">
-            ₹{{ product.price }}
+            ₦{{ product.price }}
           </span>
           <span class="ml-1 text-sm text-muted-foreground">/pack</span>
         </div>

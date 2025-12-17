@@ -116,10 +116,10 @@
                 v-if="hasSale"
                 class="text-3xl line-through text-muted-foreground"
               >
-                ₹{{ parseFloat(product.price).toFixed(2) }}
+                ₦{{ parseFloat(product.price).toFixed(2) }}
               </span>
               <span class="text-4xl font-bold md:text-5xl text-primary">
-                ₹{{ displayPrice }}
+                ₦{{ displayPrice }}
               </span>
             </div>
             <span class="text-lg text-muted-foreground"
@@ -156,7 +156,7 @@
               <div class="text-right">
                 <p class="text-sm text-muted-foreground">Total</p>
                 <p class="text-2xl font-bold text-primary">
-                  ₹{{ (parseFloat(displayPrice) * quantity).toFixed(2) }}
+                  ₦{{ (parseFloat(displayPrice) * quantity).toFixed(2) }}
                 </p>
               </div>
             </div>
@@ -181,7 +181,7 @@
                 <Truck :size="24" class="text-secondary" />
               </div>
               <p class="text-sm font-medium text-foreground">Free Shipping</p>
-              <p class="text-xs text-muted-foreground">Over ₹1000</p>
+              <p class="text-xs text-muted-foreground">Over ₦1000</p>
             </div>
             <div class="text-center">
               <div

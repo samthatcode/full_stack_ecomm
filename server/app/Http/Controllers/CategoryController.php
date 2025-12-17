@@ -10,7 +10,7 @@ class CategoryController extends Controller
     public function getProductCategory(Request $request)
     {
         return response()->json([
-            'data' =>  Category::all(),
+            'data' =>  Category::with('products')->get(),
             'message' => 'Product category fetched successfully'
         ], 200);
     }
