@@ -20,11 +20,11 @@
         <h3 class="mb-4 text-lg font-semibold text-foreground">Category</h3>
         <div class="flex flex-wrap gap-3">
           <Button
-            :variant="selectedCategory === null ? 'default' : 'outline'"
-            @click="selectedCategory = null"
+            :variant="selected_category === null ? 'default' : 'outline'"
+            @click="selected_category = null"
             :class="[
               'rounded-xl px-4 py-2',
-              selectedCategory === null
+              selected_category === null
                 ? 'bg-primary text-white shadow-md'
                 : 'border-primary text-primary hover:bg-primary/5',
             ]"
@@ -34,16 +34,17 @@
           <Button
             v-for="cat in categories"
             :key="cat"
-            :variant="selectedCategory === cat ? 'default' : 'outline'"
-            @click="selectedCategory = cat"
+            :variant="selected_category === cat ? 'default' : 'outline'"
+            @click="selected_category = cat"
+            v-model="category_id"
             :class="[
               'rounded-xl px-4 py-2',
-              selectedCategory === cat
+              selected_category === cat
                 ? 'bg-primary text-white shadow-md'
                 : 'border-primary text-primary hover:bg-primary/5',
             ]"
           >
-            {{ cat }}
+            {{ cat.name }}
           </Button>
         </div>
       </div>
@@ -52,7 +53,7 @@
       <div class="p-6 bg-white border rounded-xl border-border">
         <h3 class="mb-4 text-lg font-semibold text-foreground">Sort By</h3>
         <select
-          v-model="sortBy"
+          v-model="sort_by"
           class="w-full px-4 py-3 bg-white border border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
         >
           <option value="featured">Featured</option>
@@ -66,8 +67,8 @@
     <!-- Results Count -->
     <div class="flex items-center justify-between">
       <p class="text-muted-foreground">
-        Showing {{ allProducts.length }} products
-        <span v-if="selectedCategory"> in {{ selectedCategory }}</span>
+        Showing {{ total_products }} products
+        <span v-if="selected_category"> in {{ selected_category.name }}</span>
       </p>
     </div>
 
@@ -76,14 +77,14 @@
       class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
       <ProductCard
-        v-for="product in allProducts"
+        v-for="product in all_products"
         :key="product.id"
         :product="product"
       />
     </div>
 
     <!-- No Results -->
-    <div v-if="allProducts.length === 0" class="py-16 text-center">
+    <div v-if="total_products === 0" class="py-16 text-center">
       <div
         class="flex items-center justify-center w-24 h-24 mx-auto mb-6 rounded-full bg-muted/20"
       >
@@ -123,11 +124,12 @@ export default {
 
   data() {
     return {
-      selectedCategory: null,
-      sortBy: "featured",
+      selected_category: null,
+      // sort_by: "featured",
       showFilters: false,
       categories: [],
-      allProducts: [],
+      all_products: [],
+      total_products: 0,
     };
   },
 
@@ -135,19 +137,31 @@ export default {
 
   methods: {
     getAllProducts() {
-      Products.getAllProducts()
+      const params = {};
+
+      if (this.selected_category) {
+        params.category_id = this.selected_category.id;
+      }
+
+      if (this.sort_by) {
+        params.sort_by = this.sort_by;
+      }
+      Products.getAllProducts(params)
         .then((res) => {
-          this.allProducts = res.data?.data?.data;
+          this.all_products = res.data?.data?.data;
+          this.total_products =
+            res.data?.data?.total || this.all_products.length;
         })
         .catch((err) => {
           console.error("Error fetching products:", err);
-          this.allProducts = [];
+          this.all_products = [];
+          this.total_products = 0;
         });
     },
     getAllCategories() {
       Category.getAllCategories()
         .then((res) => {
-          this.categories = res.data?.data?.data;
+          this.categories = res.data?.data;
         })
         .catch((err) => {
           console.error("Error fetching categories:", err);
@@ -155,11 +169,19 @@ export default {
         });
     },
     clearFilters() {
-      this.selectedCategory = null;
-      this.sortBy = "featured";
+      this.selected_category = null;
+      this.sort_by = "featured";
     },
   },
 
+  watch: {
+    selected_category() {
+      this.getAllProducts();
+    },
+    sort_by() {
+      this.getAllProducts();
+    },
+  },
   mounted() {
     this.getAllProducts();
     this.getAllCategories();

@@ -69,7 +69,7 @@
                     {{ item.name }}
                   </h3>
                   <p class="mb-3 text-xl font-bold text-primary">
-                    ₹{{ item.price }}
+                    ₦{{ item.price }}
                   </p>
 
                   <!-- Quantity Controls -->
@@ -105,7 +105,7 @@
                     <div class="text-right">
                       <p class="text-sm text-muted-foreground">Total</p>
                       <p class="text-lg font-bold text-primary">
-                        ₹{{ item.price * item.quantity }}
+                        ₦{{ item.price * item.quantity }}
                       </p>
                     </div>
                   </div>
@@ -132,7 +132,7 @@
             <div class="pb-6 mb-6 space-y-4 border-b border-border">
               <div class="flex justify-between">
                 <span class="text-muted-foreground">Subtotal</span>
-                <span class="font-semibold">₹{{ subtotal }}</span>
+                <span class="font-semibold">₦{{ subtotal }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-muted-foreground">Shipping</span>
@@ -140,18 +140,18 @@
                   <span v-if="shipping === 0" class="font-bold text-secondary"
                     >Free</span
                   >
-                  <span v-else>₹{{ shipping }}</span>
+                  <span v-else>₦{{ shipping }}</span>
                 </span>
               </div>
               <div class="flex justify-between">
                 <span class="text-muted-foreground">Tax (18%)</span>
-                <span class="font-semibold">₹{{ tax }}</span>
+                <span class="font-semibold">₦{{ tax }}</span>
               </div>
             </div>
 
             <div class="flex justify-between mb-6">
               <span class="text-xl font-bold text-foreground">Total</span>
-              <span class="text-3xl font-bold text-primary">₹{{ total }}</span>
+              <span class="text-3xl font-bold text-primary">₦{{ total }}</span>
             </div>
 
             <!-- Free Shipping Banner -->
@@ -160,7 +160,7 @@
               class="p-4 mb-6 border bg-secondary/10 border-secondary/20 rounded-xl"
             >
               <p class="text-sm font-medium text-center text-secondary">
-                Add ₹{{ 1000 - subtotal }} more for free shipping!
+                Add ₦{{ 1000 - subtotal }} more for free shipping!
               </p>
             </div>
 

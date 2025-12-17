@@ -16,7 +16,7 @@
         </div>
         <p class="mb-1 text-sm text-gray-600">Total Revenue</p>
         <p class="text-2xl font-bold text-gray-900">
-          ₹{{ stats.totalRevenue?.toLocaleString() || "0" }}
+          ₦{{ stats.totalRevenue?.toLocaleString() || "0" }}
         </p>
       </div>
 
@@ -77,7 +77,7 @@
               <p class="text-sm text-gray-600">{{ order.user.name }}</p>
             </div>
             <div class="text-right">
-              <p class="font-semibold">₹{{ order.total }}</p>
+              <p class="font-semibold">₦{{ order.total }}</p>
               <span
                 :class="statusClass(order.status)"
                 class="px-2 py-1 text-xs rounded-full"

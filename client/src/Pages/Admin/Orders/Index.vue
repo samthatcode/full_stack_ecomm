@@ -50,7 +50,7 @@
             <td class="px-6 py-4 text-sm">
               {{ formatDate(order.created_at) }}
             </td>
-            <td class="px-6 py-4 font-semibold">₹{{ order.total }}</td>
+            <td class="px-6 py-4 font-semibold">₦{{ order.total }}</td>
             <td class="px-6 py-4">
               <select
                 @change="updateStatus(order.id, $event.target.value)"
@@ -111,7 +111,7 @@ export default {
     },
     viewOrder(order) {
       alert(
-        `View order details for #${order.id}\nTotal: ₹${order.total}\nStatus: ${order.status}`
+        `View order details for #${order.id}\nTotal: ₦${order.total}\nStatus: ${order.status}`
       );
       // You can open a modal here later
     },

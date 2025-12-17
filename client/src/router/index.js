@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../pages/Home.vue'
-import Products from '../pages/Products.vue'
-import ProductDetail from '../pages/ProductDetail.vue'
-import Cart from '../pages/Cart.vue'
-import Checkout from '../pages/Checkout.vue'
-import Login from '../pages/Login.vue'
-import Signup from '../pages/Signup.vue'
-import Profile from '../pages/Profile.vue'
-import Help from '../pages/Help.vue'
+import Home from '../Pages/Home.vue'
+import Products from '../Pages/Products.vue'
+import ProductDetail from '../Pages/ProductDetail.vue'
+import Cart from '../Pages/Cart.vue'
+import Checkout from '../Pages/Checkout.vue'
+import Login from '../Pages/Login.vue'
+import Signup from '../Pages/Signup.vue'
+import Profile from '../Pages/Profile.vue'
+import Help from '../Pages/Help.vue'
 import { Auth } from '../services/auth'
 
 const routes = [
@@ -102,7 +102,11 @@ const routes = [
         name: 'AdminSettings',
         component: () => import('../Pages/Admin/Settings/Index.vue')
       },
-
+      {
+        path: 'users',
+        name: 'AdminUsers',
+        component: () => import('../Pages/Admin/Users/Index.vue')
+      },
     ],
 
   },
@@ -120,15 +124,20 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const requires_auth = to.matched.some(record => record.meta.requiresAuth)
+  const requires_admin = to.matched.some(record => record.meta.requiresAdmin);
+
   const is_authenticated = Auth.is_authenticated()
+  const user = Auth.getUser();
 
   if (requires_auth && !is_authenticated) {
     next({
       name: 'Login',
       query: { redirect: to.fullPath }
     })
+  } else if (requires_admin && !user?.roles?.includes('super_admin')) {
+    next('/');  // or a forbidden page
   } else {
-    next()
+    next();
   }
 })
 

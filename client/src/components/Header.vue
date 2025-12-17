@@ -44,7 +44,25 @@
         <!-- Right Side Icons -->
         <div class="flex items-center gap-3">
           <!-- Login & Signup Buttons - Desktop -->
-          <div class="items-center hidden gap-2 md:flex">
+          <div
+            v-if="is_authenticated"
+            class="items-center hidden gap-2 md:flex"
+          >
+            <router-link
+              :to="{ name: 'Profile' }"
+              class="flex items-center gap-2 px-4 py-2 font-medium transition-colors rounded-lg text-foreground hover:bg-accent/10"
+            >
+              <User :size="18" />
+              <span>{{ user_name }}</span>
+            </router-link>
+            <button
+              @click="handleLogout"
+              class="px-4 py-2 font-medium transition-colors rounded-lg text-foreground hover:text-destructive hover:bg-accent/10"
+            >
+              Logout
+            </button>
+          </div>
+          <div v-else class="items-center hidden gap-2 md:flex">
             <router-link
               :to="{ name: 'Login' }"
               class="px-4 py-2 font-medium transition-colors text-foreground hover:text-primary"
@@ -62,13 +80,14 @@
           <!-- Search Icon - Mobile -->
           <button
             class="p-2 transition-colors md:hidden text-foreground hover:text-primary"
-            @click="isSearchOpen = !isSearchOpen"
+            @click="is_search_open = !is_search_open"
           >
             <Search :size="20" />
           </button>
 
           <!-- Admin Icon -->
           <router-link
+            v-if="is_authenticated"
             :to="{ name: 'AdminDashboard' }"
             class="p-2 transition-colors text-foreground hover:text-primary"
             title="Admin Dashboard"
@@ -78,6 +97,7 @@
 
           <!-- Profile Icon -->
           <router-link
+            v-if="is_authenticated"
             :to="{ name: 'Profile' }"
             class="p-2 transition-colors text-foreground hover:text-primary"
             title="My Profile"
@@ -102,16 +122,16 @@
           <!-- Mobile Menu Button -->
           <button
             class="p-2 transition-colors md:hidden text-foreground hover:text-primary"
-            @click="isOpen = !isOpen"
+            @click="is_open = !is_open"
           >
-            <X v-if="isOpen" :size="24" />
+            <X v-if="is_open" :size="24" />
             <Menu v-else :size="24" />
           </button>
         </div>
       </div>
 
       <!-- Mobile Search -->
-      <div v-if="isSearchOpen" class="pb-4 md:hidden">
+      <div v-if="is_search_open" class="pb-4 md:hidden">
         <div class="relative">
           <input
             type="text"
@@ -125,51 +145,72 @@
       </div>
 
       <!-- Mobile Navigation -->
-      <nav v-if="isOpen" class="pt-4 pb-4 border-t md:hidden border-border">
+      <nav v-if="is_open" class="pt-4 pb-4 border-t md:hidden border-border">
         <div class="flex flex-col gap-3">
           <router-link
             :to="{ name: 'Home' }"
             class="px-3 py-2 font-medium transition-colors rounded-lg text-foreground hover:text-primary hover:bg-accent/10"
-            @click="isOpen = false"
+            @click="is_open = false"
           >
             Home
           </router-link>
           <router-link
             :to="{ name: 'Products' }"
             class="px-3 py-2 font-medium transition-colors rounded-lg text-foreground hover:text-primary hover:bg-accent/10"
-            @click="isOpen = false"
+            @click="is_open = false"
           >
             Shop All Products
           </router-link>
           <router-link
             :to="{ name: 'Help' }"
             class="px-3 py-2 font-medium transition-colors rounded-lg text-foreground hover:text-primary hover:bg-accent/10"
-            @click="isOpen = false"
+            @click="is_open = false"
           >
             Help & Support
           </router-link>
-          <router-link
-            :to="{ name: 'AdminDashboard' }"
-            class="flex items-center gap-2 px-3 py-2 font-medium transition-colors rounded-lg text-foreground hover:text-primary hover:bg-accent/10"
-            @click="isOpen = false"
-          >
-            <Shield :size="18" />
-            Admin Dashboard
-          </router-link>
+
+          <!-- Authenticated User Links - Mobile -->
+          <template v-if="is_authenticated">
+            <router-link
+              :to="{ name: 'Profile' }"
+              class="flex items-center gap-2 px-3 py-2 font-medium transition-colors rounded-lg text-foreground hover:text-primary hover:bg-accent/10"
+              @click="is_open = false"
+            >
+              <User :size="18" />
+              My Profile
+            </router-link>
+            <router-link
+              :to="{ name: 'AdminDashboard' }"
+              class="flex items-center gap-2 px-3 py-2 font-medium transition-colors rounded-lg text-foreground hover:text-primary hover:bg-accent/10"
+              @click="is_open = false"
+            >
+              <Shield :size="18" />
+              Admin Dashboard
+            </router-link>
+            <button
+              @click="handleLogout"
+              class="px-3 py-2 font-medium text-left transition-colors rounded-lg text-destructive hover:bg-accent/10"
+            >
+              Logout
+            </button>
+          </template>
 
           <!-- Login & Signup - Mobile -->
-          <div class="flex flex-col gap-2 pt-3 mt-2 border-t border-border">
+          <div
+            v-else
+            class="flex flex-col gap-2 pt-3 mt-2 border-t border-border"
+          >
             <router-link
               :to="{ name: 'Login' }"
               class="px-3 py-2 font-medium text-center transition-colors rounded-lg text-foreground hover:text-primary hover:bg-accent/10"
-              @click="isOpen = false"
+              @click="is_open = false"
             >
               Login
             </router-link>
             <router-link
               :to="{ name: 'Signup' }"
               class="px-3 py-2 font-medium text-center text-white transition-colors rounded-lg bg-primary hover:bg-primary/90"
-              @click="isOpen = false"
+              @click="is_open = false"
             >
               Sign Up
             </router-link>
@@ -183,6 +224,7 @@
 <script>
 import { ShoppingCart, Menu, X, Search, User, Shield } from "lucide-vue-next";
 import { useCartStore } from "@/stores/cart";
+import { Auth } from "../services/auth";
 
 export default {
   name: "Header",
@@ -198,15 +240,50 @@ export default {
 
   data() {
     return {
-      isOpen: false,
-      isSearchOpen: false,
+      is_open: false,
+      is_search_open: false,
+      is_authenticated: false,
+      user_name: "",
     };
+  },
+
+  methods: {
+    checkAuthStatus() {
+      this.is_authenticated = Auth.is_authenticated();
+      if (this.is_authenticated) {
+        const user = Auth.getUser();
+        this.user_name = user?.name || user?.email || "User";
+      }
+    },
+
+    async handleLogout() {
+      try {
+        await Auth.logout();
+        this.is_authenticated = false;
+        this.user_name = "";
+        this.is_open = false;
+
+        this.$router.push({ name: "Home" });
+      } catch (error) {
+        console.error("Logout failed:", error);
+      }
+    },
   },
 
   computed: {
     cartCount() {
       const cartStore = useCartStore();
       return cartStore.cartCount;
+    },
+  },
+
+  mounted() {
+    this.checkAuthStatus();
+  },
+
+  watch: {
+    $route() {
+      this.checkAuthStatus();
     },
   },
 };
