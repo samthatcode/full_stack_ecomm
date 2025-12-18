@@ -68,10 +68,25 @@ class AuthController extends Controller
 
             $user->tokens()->delete();
             $token = $user->createToken('auth_token')->plainTextToken;
+
+            $user->load('roles', 'permissions');
             return response()->json([
                 'message' => 'User logged in successfully',
                 'token' => $token,
-                'user' => $user
+                'user' => [
+                    'id' => $user->id,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'address' => $user->address,
+                    'city' => $user->city,
+                    'state' => $user->state,
+                    'zip_code' => $user->zip_code,
+                    'country' => $user->country,
+                    'roles' => $user->roles->pluck('name')->toArray(),
+                    'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
+                ]
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

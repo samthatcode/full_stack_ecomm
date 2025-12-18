@@ -234,7 +234,9 @@ export default {
           password: this.password,
         });
 
-        const redirect_to = this.$route.query.redirect || "/checkout";
+        const redirect_to = this.$route.query.redirect || {
+          name: "AdminDashboard",
+        };
         this.$router.push(redirect_to);
       } catch (err) {
         this.error = "Login failed. Please try again.";

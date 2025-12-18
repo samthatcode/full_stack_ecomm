@@ -6,7 +6,6 @@ import Cart from '../Pages/Cart.vue'
 import Checkout from '../Pages/Checkout.vue'
 import Login from '../Pages/Login.vue'
 import Signup from '../Pages/Signup.vue'
-import Profile from '../Pages/Profile.vue'
 import Help from '../Pages/Help.vue'
 import { Auth } from '../services/auth'
 
@@ -48,11 +47,6 @@ const routes = [
     component: Signup
   },
   {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile
-  },
-  {
     path: '/help',
     name: 'Help',
     component: Help
@@ -60,7 +54,7 @@ const routes = [
   {
     path: '/dashboard',
     component: () => import('../Layout/AdminLayout.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true },
+    meta: { requiresAuth: true, },
     children: [
       {
         path: '',
@@ -94,7 +88,7 @@ const routes = [
       },
       {
         path: 'profile',
-        name: 'AdminProfile',
+        name: 'Profile',
         component: () => import('../Pages/Admin/Profile/Index.vue')
       },
       {
@@ -127,17 +121,26 @@ router.beforeEach((to, from, next) => {
   const requires_admin = to.matched.some(record => record.meta.requiresAdmin);
 
   const is_authenticated = Auth.is_authenticated()
-  const user = Auth.getUser();
+  const user = Auth.is_admin();
 
   if (requires_auth && !is_authenticated) {
     next({
       name: 'Login',
       query: { redirect: to.fullPath }
     })
-  } else if (requires_admin && !user?.roles?.includes('super_admin')) {
-    next('/');  // or a forbidden page
-  } else {
+
+  } else if (requires_admin) {
+    // Option 1: Allow any authenticated user (recommended for unified dashboard)
     next();
+
+    // Option 2: Keep strict — only allow specific roles
+    // if (!user?.roles?.includes('super_admin') && !user?.roles?.includes('admin')) {
+    //   next('/');
+    // } else {
+    //   next();
+    // }
+  } else {
+    next()
   }
 })
 
