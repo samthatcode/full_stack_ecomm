@@ -124,7 +124,19 @@
 </template>
 
 <script>
-import { Bell, ChevronDown, Menu } from "lucide-vue-next";
+import {
+  Bell,
+  ChevronDown,
+  Menu,
+  FolderTree,
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Users,
+  BarChart3,
+  User,
+  Settings,
+} from "lucide-vue-next";
 import { Auth } from "../services/auth";
 
 export default {
@@ -146,7 +158,7 @@ export default {
         {
           id: "dashboard",
           label: "Dashboard",
-          icon: "LayoutDashboard",
+          icon: LayoutDashboard,
           roles: [],
           permissions: [],
         },
@@ -155,50 +167,50 @@ export default {
         {
           id: "products",
           label: "Products",
-          icon: "Package",
+          icon: Package,
           permissions: ["manage_products"],
         },
         {
           id: "orders",
           label: "Orders",
-          icon: "ShoppingCart",
+          icon: ShoppingCart,
           permissions: ["manage_orders"],
         },
         {
           id: "customers",
           label: "Customers",
-          icon: "Users",
+          icon: Users,
           permissions: ["manage_users"],
         },
         {
           id: "users",
           label: "Users Management",
-          icon: "Users",
+          icon: Users,
           roles: ["super_admin"],
         }, // Only super admins
         {
           id: "categories",
           label: "Categories",
-          icon: "FolderTree",
+          icon: FolderTree,
           permissions: ["manage_categories"],
         },
         {
           id: "analytics",
           label: "Analytics",
-          icon: "BarChart3",
+          icon: BarChart3,
           permissions: ["manage_dashboard"],
         },
         {
           id: "profile",
           label: "My Profile",
-          icon: "User",
+          icon: User,
           roles: [],
           permissions: [],
         },
         {
           id: "settings",
           label: "Settings",
-          icon: "Settings",
+          icon: Settings,
           roles: [],
           permissions: [],
         },
@@ -219,21 +231,14 @@ export default {
         : [];
 
       return allTabs.filter((tab) => {
-        // If no restrictions → show to everyone
-        if (tab.roles?.length === 0 && tab.permissions?.length === 0)
-          return true;
+        const roles = tab.roles ?? [];
+        const perms = tab.permissions ?? [];
 
-        const has_role =
-          tab.roles.length > 0
-            ? tab.roles.some((role) => user_roles.includes(role))
-            : true;
-
-        const has_perm =
-          tab.permissions.length > 0
-            ? tab.permissions.some((perm) => user_permissions.includes(perm))
-            : true;
-
-        return has_role && has_perm;
+        return (
+          (roles.length === 0 || roles.some((r) => user_roles.includes(r))) &&
+          (perms.length === 0 ||
+            perms.some((p) => user_permissions.includes(p)))
+        );
       });
     },
 

@@ -16,7 +16,7 @@
         </div>
         <p class="mb-1 text-sm text-gray-600">Total Revenue</p>
         <p class="text-2xl font-bold text-gray-900">
-          ₦{{ stats.totalRevenue?.toLocaleString() || "0" }}
+          ₦{{ stats.total_revenue?.toLocaleString() || "0" }}
         </p>
       </div>
 
@@ -30,7 +30,7 @@
         </div>
         <p class="mb-1 text-sm text-gray-600">Total Orders</p>
         <p class="text-2xl font-bold text-gray-900">
-          {{ stats.totalOrders || 0 }}
+          {{ stats.total_orders || 0 }}
         </p>
       </div>
 
@@ -44,7 +44,7 @@
         </div>
         <p class="mb-1 text-sm text-gray-600">Total Products</p>
         <p class="text-2xl font-bold text-gray-900">
-          {{ stats.totalProducts || 0 }}
+          {{ stats.total_products || 0 }}
         </p>
       </div>
 
@@ -58,7 +58,7 @@
         </div>
         <p class="mb-1 text-sm text-gray-600">Low Stock Items</p>
         <p class="text-2xl font-bold text-gray-900">
-          {{ stats.lowStockItems || 0 }}
+          {{ stats.low_stock_items || 0 }}
         </p>
       </div>
     </div>
@@ -68,7 +68,7 @@
         <h3 class="mb-4 text-lg font-bold text-gray-900">Recent Orders</h3>
         <div class="space-y-4">
           <div
-            v-for="order in stats.recentOrders"
+            v-for="order in stats.recent_orders"
             :key="order.id"
             class="flex justify-between pb-4 border-b last:border-0"
           >
@@ -106,11 +106,11 @@ export default {
   data() {
     return {
       stats: {
-        totalRevenue: 0,
-        totalOrders: 0,
-        totalProducts: 0,
-        lowStockItems: 0,
-        recentOrders: [],
+        total_revenue: 0,
+        total_orders: 0,
+        total_products: 0,
+        low_stock_items: 0,
+        recent_orders: [],
       },
       loading: true,
     };
