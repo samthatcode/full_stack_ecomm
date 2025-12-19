@@ -251,7 +251,7 @@ export default {
     checkAuthStatus() {
       this.is_authenticated = Auth.is_authenticated();
       if (this.is_authenticated) {
-        const user = Auth.getUser();
+        const user = Auth.get_user();
         this.user_name = user?.name || user?.email || "User";
       }
     },

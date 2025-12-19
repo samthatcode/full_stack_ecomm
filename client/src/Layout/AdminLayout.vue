@@ -124,7 +124,19 @@
 </template>
 
 <script>
-import { Bell, ChevronDown, Menu } from "lucide-vue-next";
+import {
+  Bell,
+  ChevronDown,
+  Menu,
+  FolderTree,
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Users,
+  BarChart3,
+  User,
+  Settings,
+} from "lucide-vue-next";
 import { Auth } from "../services/auth";
 
 export default {
@@ -135,24 +147,101 @@ export default {
       showNotifications: false,
       showProfileMenu: false,
       unreadNotifications: 3,
-      tabs: [
-        { id: "dashboard", label: "Dashboard", icon: "LayoutDashboard" },
-        { id: "products", label: "Products", icon: "Package" },
-        { id: "orders", label: "Orders", icon: "ShoppingCart" },
-        { id: "customers", label: "Customers", icon: "Users" },
-        { id: "users", label: "Users", icon: "Users" },
-        { id: "analytics", label: "Analytics", icon: "BarChart3" },
-        { id: "categories", label: "Categories", icon: "FolderTree" },
-        { id: "profile", label: "Profile", icon: "User" },
-        { id: "settings", label: "Settings", icon: "Settings" },
-      ],
     };
   },
   computed: {
-    activeTabLabel() {
-      const tab = this.tabs.find((t) => t.id === this.activeTab);
-      return tab ? tab.label : "";
+    current_user() {
+      return Auth.current_user();
     },
+    tabs() {
+      const allTabs = [
+        {
+          id: "dashboard",
+          label: "Dashboard",
+          icon: LayoutDashboard,
+          roles: [],
+          permissions: [],
+        },
+
+        // Visible to admins & staff
+        {
+          id: "products",
+          label: "Products",
+          icon: Package,
+          permissions: ["manage_products"],
+        },
+        {
+          id: "orders",
+          label: "Orders",
+          icon: ShoppingCart,
+          permissions: ["manage_orders"],
+        },
+        {
+          id: "customers",
+          label: "Customers",
+          icon: Users,
+          permissions: ["manage_users"],
+        },
+        {
+          id: "users",
+          label: "Users Management",
+          icon: Users,
+          roles: ["super_admin"],
+        }, // Only super admins
+        {
+          id: "categories",
+          label: "Categories",
+          icon: FolderTree,
+          permissions: ["manage_categories"],
+        },
+        {
+          id: "analytics",
+          label: "Analytics",
+          icon: BarChart3,
+          permissions: ["manage_dashboard"],
+        },
+        {
+          id: "profile",
+          label: "My Profile",
+          icon: User,
+          roles: [],
+          permissions: [],
+        },
+        {
+          id: "settings",
+          label: "Settings",
+          icon: Settings,
+          roles: [],
+          permissions: [],
+        },
+      ];
+
+      const user = Auth.current_user();
+
+      // Safety: if no user or no roles/permissions, show only basic tabs
+      if (!user) {
+        return allTabs.filter(
+          (tab) => tab.roles.length === 0 && tab.permissions.length === 0
+        );
+      }
+
+      const user_roles = Array.isArray(user.roles) ? user.roles : [];
+      const user_permissions = Array.isArray(user.permissions)
+        ? user.permissions
+        : [];
+
+      return allTabs.filter((tab) => {
+        const roles = tab.roles ?? [];
+        const perms = tab.permissions ?? [];
+
+        return (
+          (roles.length === 0 || roles.some((r) => user_roles.includes(r))) &&
+          (perms.length === 0 ||
+            perms.some((p) => user_permissions.includes(p)))
+        );
+      });
+    },
+
     activeTab() {
       const map = {
         AdminDashboard: "dashboard",
@@ -171,7 +260,7 @@ export default {
   },
 
   methods: {
-    selectTab(tab) {
+    selectTab(tab_id) {
       const routes = {
         dashboard: "",
         products: "products",
@@ -185,7 +274,7 @@ export default {
       };
 
       this.mobileSidebarOpen = false;
-      this.$router.push(`/dashboard/${routes[tab]}`);
+      this.$router.push(`/dashboard/${routes[tab_id]}`);
     },
 
     handleLogout() {

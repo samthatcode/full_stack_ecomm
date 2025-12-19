@@ -125,7 +125,8 @@ export default {
   data() {
     return {
       selected_category: null,
-      // sort_by: "featured",
+      sort_by: "",
+      category_id: "",
       showFilters: false,
       categories: [],
       all_products: [],
