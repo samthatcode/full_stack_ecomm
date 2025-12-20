@@ -187,7 +187,7 @@ export default {
           label: "Users Management",
           icon: Users,
           roles: ["super_admin"],
-        }, // Only super admins
+        },
         {
           id: "categories",
           label: "Categories",
@@ -199,6 +199,7 @@ export default {
           label: "Analytics",
           icon: BarChart3,
           permissions: ["manage_dashboard"],
+          roles: ["super_admin"],
         },
         {
           id: "profile",

@@ -32,7 +32,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         Route::prefix('orders')->group(function () {
-            Route::get('/get_all_orders', [OrderController::class, 'getCustomerOrders']);
+            Route::post('/get_customer_orders', [OrderController::class, 'getCustomerOrders']);
             Route::get('/{order_id}/get_single_order', [OrderController::class, 'getSingleOrder']);
             Route::put('/{order_id}/update_order_status', [OrderController::class, 'updateOrderStatus']);
         });
